@@ -5,13 +5,13 @@ import format.mask._MaskCharacter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FormatPattern {
+public class PatternFormat {
 
 
     private final List<_MaskCharacter> semanticMask = new ArrayList<>();
 
 
-    public FormatPattern(String mask) {
+    public PatternFormat(String mask) {
         buildSemanticMask(mask);
         updateSemanticMask("");
     }

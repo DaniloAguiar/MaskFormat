@@ -7,32 +7,31 @@ import javafx.scene.control.TextFormatter;
 import javafx.util.StringConverter;
 import org.junit.jupiter.api.Test;
 
-class FormatPatternTest {
-    FormatPattern formatPattern = new FormatPattern("###.###.###-##");
+class PatternFormatTest {
+    PatternFormat patternFormat = new PatternFormat("###.###.###-##");
 
     @Test
     void exemple() {
-        System.out.println(formatPattern.format("00000000000"));
+        System.out.println(patternFormat.format("00000000000"));
         //#result_format: 000.000.000-00
 
 
-        System.out.println(formatPattern.parse("000.000.000-00"));
+        System.out.println(patternFormat.parse("000.000.000-00"));
         //#result_parse: 00000000000
     }
-
 
     void exempleTextField() {
         StringConverter<String> stringConverter = new StringConverter<String>() {
             @Override
             public String toString(String object) {
                 if (object == null) return "";
-                return formatPattern.format(object);
+                return patternFormat.format(object);
             }
 
             @Override
             public String fromString(String string) {
                 if (string == null || string.length() == 0) return null;
-                return formatPattern.parse(string);
+                return patternFormat.parse(string);
             }
         };
         TextFormatter<String> textFormatter = new TextFormatter<>(stringConverter);
@@ -42,19 +41,17 @@ class FormatPatternTest {
     }
 
     void exempleBind() {
-
-
         StringConverter<String> stringConverter = new StringConverter<String>() {
             @Override
             public String toString(String object) {
                 if (object == null) return "";
-                return formatPattern.format(object);
+                return patternFormat.format(object);
             }
 
             @Override
             public String fromString(String string) {
                 if (string == null || string.length() == 0) return null;
-                return formatPattern.parse(string);
+                return patternFormat.parse(string);
             }
         };
         TextFormatter<String> textFormatter = new TextFormatter<>(stringConverter);
