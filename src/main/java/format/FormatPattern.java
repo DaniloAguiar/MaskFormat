@@ -28,7 +28,6 @@ public class FormatPattern {
         while (i < length) {
             char maskValue = newMask[i];
 
-            // If the actual char is MASK_ESCAPE look the next char as literal
             if (maskValue == MaskFactory.MASK_ESCAPE) {
                 semanticMask.add(factory.createMask(maskValue, newMask[i + 1]));
                 i++;
@@ -76,18 +75,7 @@ public class FormatPattern {
     }
 
 
-    public String format(String text) {
-        updateSemanticMask(text);
-        return formatToString();
-    }
-
-    public String parse(String text) {
-        updateSemanticMask(text);
-        return parseToPlain();
-    }
-
-
-    public String formatToString() {
+    private String formatToString() {
         StringBuilder value = new StringBuilder();
 
         for (int i = 0; i < semanticMask.size(); i++) {
@@ -107,16 +95,26 @@ public class FormatPattern {
         return value.toString();
     }
 
-    public String parseToPlain() {
+    private String parseToPlain() {
         StringBuilder value = new StringBuilder();
 
         for (_MaskCharacter characterAt : semanticMask) {
-            if (!characterAt.isLiteral() && characterAt.isNull())
+            if (!characterAt.isLiteral() && !characterAt.isNull()) {
                 value.append(characterAt.getValue());
+            }
         }
 
         return value.toString();
     }
 
 
+    public String format(String text) {
+        updateSemanticMask(text);
+        return formatToString();
+    }
+
+    public String parse(String text) {
+        updateSemanticMask(text);
+        return parseToPlain();
+    }
 }
