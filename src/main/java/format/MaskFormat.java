@@ -5,13 +5,13 @@ import format.mask._MaskCharacter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PatternFormat {
+public class MaskFormat {
 
 
     private final List<_MaskCharacter> semanticMask = new ArrayList<>();
 
 
-    public PatternFormat(String mask) {
+    public MaskFormat(String mask) {
         buildSemanticMask(mask);
         updateSemanticMask("");
     }
@@ -83,15 +83,11 @@ public class PatternFormat {
             _MaskCharacter characterAt = semanticMask.get(i);
             _MaskCharacter characterAtNext = i + 1 < semanticMask.size() ? semanticMask.get(i + 1) : null;
 
-            if (((characterAtPrevious == null || characterAtPrevious.isNull()) && characterAt.isLiteral()) ||
-                    ((characterAtNext == null || characterAtNext.isNull()) && characterAt.isLiteral())
-            ) break;
+            if ((characterAtPrevious != null && characterAtPrevious.isNull() && characterAt.isLiteral()) ||
+                    (characterAtNext != null && characterAtNext.isNull() && characterAt.isLiteral())) break;
 
-            if (!characterAt.isNull())
-                value.append(characterAt.getValue());
+            if (!characterAt.isNull()) value.append(characterAt.getValue());
         }
-
-
         return value.toString();
     }
 

@@ -9,12 +9,12 @@ It's a mask format for java. Now you can use a simple mask for your string.
 # How to use
 
 ``` java
-        PatternFormat patternFormat = new PatternFormat("###.###.###-##");
+        MaskFormat maskFormat = new MaskFormat("###.###.###-##");
 
-        System.out.println(patternFormat.format("00000000000"));
+        System.out.println(maskFormat.format("00000000000"));
         //#result_format: 000.000.000-00
 
-        System.out.println(patternFormat.parse("000.000.000-00"));
+        System.out.println(maskFormat.parse("000.000.000-00"));
         //#result_parse: 00000000000
 ```
 
@@ -25,13 +25,13 @@ You can bind with a text Field as well
             @Override
             public String toString(String object) {
                 if (object == null) return "";
-                return patternFormat.format(object);
+                return maskFormat.format(object);
             }
 
             @Override
             public String fromString(String string) {
                 if (string == null || string.length() == 0) return null;
-                return patternFormat.parse(string);
+                return maskFormat.parse(string);
             }
         };
         TextFormatter<String> textFormatter = new TextFormatter<>(stringConverter);
