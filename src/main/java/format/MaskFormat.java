@@ -2,10 +2,13 @@ package format;
 
 import format.mask._MaskCharacter;
 
+import java.text.FieldPosition;
+import java.text.Format;
+import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MaskFormat {
+public class MaskFormat extends Format {
 
 
     private final List<_MaskCharacter> semanticMask = new ArrayList<>();
@@ -75,9 +78,7 @@ public class MaskFormat {
     }
 
 
-    private String formatToString() {
-        StringBuilder value = new StringBuilder();
-
+    private StringBuffer formatToString(StringBuffer value) {
         for (int i = 0; i < semanticMask.size(); i++) {
             _MaskCharacter characterAtPrevious = i > 0 ? semanticMask.get(i - 1) : null;
             _MaskCharacter characterAt = semanticMask.get(i);
@@ -88,7 +89,7 @@ public class MaskFormat {
 
             if (!characterAt.isNull()) value.append(characterAt.getValue());
         }
-        return value.toString();
+        return value;
     }
 
     private String parseToPlain() {
@@ -104,13 +105,28 @@ public class MaskFormat {
     }
 
 
-    public String format(String text) {
+    private StringBuffer format(String text, StringBuffer toAppendTo) {
         updateSemanticMask(text);
-        return formatToString();
+        return formatToString(toAppendTo);
     }
 
-    public String parse(String text) {
+    private String parse(String text) {
         updateSemanticMask(text);
         return parseToPlain();
+    }
+
+
+    @Override
+    public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
+        String text = (String) obj;
+
+
+        return format(text, toAppendTo);
+    }
+
+    @Override
+    public String parseObject(String source, ParsePosition pos) {
+        pos.setIndex(source.length());
+        return parse(source);
     }
 }
